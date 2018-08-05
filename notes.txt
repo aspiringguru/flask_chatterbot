@@ -1,1 +1,93 @@
-ssh -i /c/2018_working/fastai/bmt25March2018FastAI_XXX.pem  ubuntu@34.216.94.136
+ssh -i /c/2018_working/fastai/bmt25March2018FastAI_XXX.pem  ec2-user@18.236.152.99
+
+---------------------------------------------------------------------------------
+#NB python2.7 still default called by python, need python3 for python3.6 runtime
+#steps below to install python3 (specifically python 3.6.5 on linux.)
+#nbb: python3.7 is latest version, haven't seen prepackaged installs yet. lag :(
+
+yum list | grep python3
+
+  $ yum list | grep python36
+  mod24_wsgi-python36.x86_64            3.5-1.25.amzn1                amzn-updates
+  python36.i686                         3.6.5-1.9.amzn1               amzn-updates
+  python36.x86_64                       3.6.5-1.9.amzn1               amzn-updates
+  python36-debug.i686                   3.6.5-1.9.amzn1               amzn-updates
+  python36-debug.x86_64                 3.6.5-1.9.amzn1               amzn-updates
+  python36-devel.i686                   3.6.5-1.9.amzn1               amzn-updates
+  python36-devel.x86_64                 3.6.5-1.9.amzn1               amzn-updates
+  python36-libs.i686                    3.6.5-1.9.amzn1               amzn-updates
+  python36-libs.x86_64                  3.6.5-1.9.amzn1               amzn-updates
+  python36-pip.noarch                   9.0.3-1.26.amzn1              amzn-updates
+  python36-setuptools.noarch            36.2.7-1.33.amzn1             amzn-main
+  python36-test.i686                    3.6.5-1.9.amzn1               amzn-updates
+  python36-test.x86_64                  3.6.5-1.9.amzn1               amzn-updates
+  python36-tools.i686                   3.6.5-1.9.amzn1               amzn-updates
+  python36-tools.x86_64                 3.6.5-1.9.amzn1               amzn-updates
+  python36-virtualenv.noarch            15.1.0-1.14.amzn1             amzn-main
+
+
+# install python3+pip, plus optionally packages to your taste
+sudo yum install python36 python36-devel python36-pip python36-setuptools python36-virtualenv
+
+# update pip3. optionally set a symbolic link to pip3
+sudo pip-3.6 install --upgrade pip
+
+
+
+---------------------------------------------------------------------------------
+#refer this as useful & good
+http://outofmyhead.olssonandjones.com/2018/02/24/how-to-install-python-3-x-on-amazon-ec2-instance/
+
+$ls -al /usr/bin/python* | grep '^[-l]'
+
+$cd /usr/bin/
+$sudo rm python
+
+$ls -al /usr/bin/python* | grep '^[-l]'
+#now we see the previous symlink removed
+
+#adding symlink for new python 3 to python
+$sudo ln -s /etc/alternatives/python3 /usr/bin/python
+
+$python --version
+Python 3.6.5
+
+$add symlink for python2 if we need it in future
+$sudo ln -s /etc/alternatives/python /usr/bin/python2
+$python2 --version
+Python 2.7.14
+---------------------------------------------------------------------------------
+#use python virtualenv
+
+python3 -m venv env
+source ./env/bin/activate
+pip install --upgrade pip
+
+#now pip install packages for this project
+
+pip install Flask
+pip install chatterbot
+pip install SQLAlchemy
+
+$ pip freeze | grep SQL
+SQLAlchemy==1.2.10
+$ pip freeze | grep chatterbot
+chatterbot-corpus==1.1.2
+$ pip freeze | grep Flask
+Flask==1.0.2
+
+nb: requirements.txt nominated
+Flask>=0.11        (1.0.2 installed)
+chatterbot>=0.7.1  (1.1.2 installed)
+SQLAlchemy>=1.1.11 (1.2.10 installed)
+
+--------------------------------------------------------------------------------
+sudo yum install git
+
+
+git clone https://github.com/aspiringguru/flask_chatterbot.git
+cd flask_chatterbot/
+chmod +x run.sh
+
+
+18.236.152.99:5000
