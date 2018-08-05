@@ -8,7 +8,7 @@ english_bot = ChatBot("Chatterbot", storage_adapter="chatterbot.storage.SQLStora
 
 english_bot.set_trainer(ChatterBotCorpusTrainer)
 english_bot.train("chatterbot.corpus.english")
-
+#the training steps can be pre-run and results stored in .json file, then reloaded.
 
 @app.route("/")
 def home():
